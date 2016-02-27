@@ -9,10 +9,11 @@ import readers.DensityReader;
 public class WordDensity {
 	
 	private String url_;
+	private int resultCount_;
 	
-	public WordDensity(){}	
-	public WordDensity(String url){
+	public WordDensity(String url, int count){
 		url_ = url;
+		resultCount_ = count;
 	}
 
 	/*
@@ -35,13 +36,36 @@ public class WordDensity {
 			//2.) Build the List of most common words
 			ArrayList<String> commonWords = reader.searchResponse(response);
 			//3.) Filter out words we do not want
+			ArrayList<String> filteredWords = filterWords(commonWords);
 			//4.) Return the result
-			return commonWords;
+			return filteredWords;
 			
 		} catch (Exception e) {
 			System.out.println("Error: " + e);
 		}
 		return null;
+	}
+	
+	public ArrayList<String> filterWords(ArrayList<String> commonWords){
+		ArrayList<String> filteredList = new ArrayList<String>();
+		int count = 0;
+		for (int i=0; i<commonWords.size(); i++){
+			//Only grab as many words as requested
+			if(count >= resultCount_){
+				break;
+			}
+			//Filter out all words less than 5, any word shorter than 5 characters is deemed an unprecise description
+			if(commonWords.get(i).length() < 5){
+				continue;
+			}
+			//Filter larger common HTML words
+			if(commonWords.contains("function") || commonWords.contains("typeof") || commonWords.contains("button") || commonWords.contains("header") || commonWords.contains("footer")){
+				continue;
+			}
+			filteredList.add(commonWords.get(i));
+			count++;
+		}
+		return filteredList;
 	}
 
 }
