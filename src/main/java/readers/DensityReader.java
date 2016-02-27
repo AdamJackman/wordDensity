@@ -19,9 +19,9 @@ public class DensityReader {
 		protected Map<String, Integer> wordMap_;
 		protected String [] HtmlIndicators_ = { "=", "<", ">", "/", "\"", "\\", "&", "$", "{", "}", ":", ";", "\t" };
 		
-		public DensityReader(){
-			this("https://github.com/AdamJackman");			
-		}		
+		public DensityReader(){		
+		}
+		
 		public DensityReader(String url){
 			url_ = url;
 			wordMap_ = new HashMap<String, Integer>();
@@ -47,9 +47,7 @@ public class DensityReader {
 			} else {
 				System.out.println("Error did not recieve response code 200");
 				return null;
-			}
-			
-			
+			}				
 		}
 		
 		/**
@@ -107,15 +105,15 @@ public class DensityReader {
 			}
 		}
 		
-		/*
+		/**
 		 * Sort the map into an ArrayList
 		 */
 		public ArrayList<String> sortMapToList(){
 			List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<Map.Entry<String, Integer>>(wordMap_.entrySet());
-			//Sort all file names in the target directory
+			//Sort all map entries using the value (frequency count)
 			Collections.sort(sortedEntries, new Comparator<Map.Entry<String, Integer>>() {			
-				//We are sorting by the calendar in the LogFile object
 				public int compare(Map.Entry<String, Integer> m1, Map.Entry<String, Integer> m2) {
+					//Descending order
 					return -(m1.getValue().compareTo(m2.getValue()));
 				}
 			});
